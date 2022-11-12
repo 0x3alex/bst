@@ -111,6 +111,10 @@
         return n; \
     } \
 \
+    /*
+        This function can also be used to destroy substrees.
+        The ptr_left or ptr_right of the node above *b needs to be updated manually
+    */ \
     void destroy_bst_##suffix(bst_##suffix *b) { \
         if(b->ptr_left != NULL) { \
             destroy_bst_##suffix(b->ptr_left); \
