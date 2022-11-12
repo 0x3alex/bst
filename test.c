@@ -11,14 +11,21 @@ int cmp(int node, int val) {
 
 int main(void) {
     compareFunc_bst_int = &cmp;
-    bst_int *b = new_bst_int(3,2,1,3);
-    insert_bst_int(b->ptr_left,2);
+    print_with_ptr_bst_int = true;
+    bst_int *b = new_bst_int(3,5,1,10);
+    insert_bst_int(b,11);
+    insert_bst_int(b,9);
     print_in_order_bst_int(b,"%d\n");
-    printf("%p\n",find_bst_int(b,5));
     puts("---");
-    destroy_bst_int(b->ptr_left);
-    b->ptr_left = NULL;
-    print_in_order_bst_int(b,"%d\n");
+    //print_in_order_bst_int(b,"%d\n");
+    //print_in_order_bst_int(b,"%d\n");
+    printf("%p\n",find_bst_int(b,11));
+    //puts("---");
+    //printf("%d\n",get_parent_bst_int(b,1)->m_value);
+    
+    //destroy_bst_int(b->ptr_left);
+    //b->ptr_left = NULL;
+    //print_in_order_bst_int(b,"%d\n");
     destroy_bst_int(b);
     return 0;
 }
