@@ -111,6 +111,16 @@
         return n; \
     } \
 \
+    void destroy_bst_##suffix(bst_##suffix *b) { \
+        if(b->ptr_left != NULL) { \
+            destroy_bst_##suffix(b->ptr_left); \
+        } \
+        if(b->ptr_right != NULL) { \
+            destroy_bst_##suffix(b->ptr_right); \
+        } \
+        free(b); \
+    } \
+\
     bst_##suffix *find_bst_##suffix(bst_##suffix *b,type val) {  \
         if(b == NULL) return NULL; \
         switch((*compareFunc_bst_##suffix)(b->m_value,val))  { \

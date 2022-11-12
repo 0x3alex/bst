@@ -15,5 +15,6 @@ int main(void) {
     insert_bst_int(b->ptr_left,2);
     print_in_order_bst_int(b,"%d\n");
     printf("%p\n",find_bst_int(b,5));
+    destroy_bst_int(b);
     return 0;
 }
