@@ -99,6 +99,57 @@
         free(root); \
     } \
 \
+    bst_##suffix *get_min_bst_##suffix(bst_##suffix *root) { \
+        bst_##suffix *c = root; \
+        while(c->ptr_left != NULL) c = c->ptr_left; \
+        return c; \
+    } \
+\
+    bst_##suffix *find_parent_bst_##suffix(bst_##suffix *root, type val) { \
+        bst_##suffix *c = root,*p = NULL; \
+        while(c != NULL && (*compareFunc_bst_##suffix)(c->m_value,val) != 1) { \
+            p = c; \
+            if((*compareFunc_bst_##suffix)(c->m_value,val) == 0) { \
+                c = c->ptr_left; \
+            }else{ \
+                c = c->ptr_right; \
+            } \
+        } \
+        return p; \
+    } \
+\
+    bool is_leaf_bst_##suffix(bst_##suffix *n) { \
+        return n->ptr_left == NULL && n->ptr_right == NULL; \
+    } \
+\
+    void delete_bst_##suffix(bst_##suffix *root, type val) { \
+        bst_##suffix *k = find_bst_##suffix(root,val); \
+        if(k == NULL) return; \
+        bst_##suffix *p = find_parent_bst_##suffix(root,val); \
+        if(is_leaf_bst_##suffix(k)) { \
+            if(root == k) destroy_bst_##suffix(root); \
+            else { \
+                if(p->ptr_left == k) p->ptr_left = NULL; \
+                else p->ptr_right = NULL; \
+                free(k); \
+            } \
+        }else if(k->ptr_left != NULL && k->ptr_right != NULL)  { \
+            bst_##suffix *s = get_min_bst_##suffix(k->ptr_right); \
+            type v = s->m_value; \
+            delete_bst_##suffix(root,v); \
+            k->m_value = v; \
+        }else{ \
+            bst_##suffix *c = k->ptr_left != NULL ? k->ptr_left : k->ptr_right; \
+            if(k != root) { \
+                if(p->ptr_left == k) p->ptr_left = c; \
+                else p->ptr_right = c; \
+            }else{ \
+                root = c; \
+            } \
+            free(k); \
+        } \
+    } \
+\
     void print_in_order_bst_##suffix(bst_##suffix *root, char *formatter) { \
         if(root != NULL) { \
             print_in_order_bst_##suffix(root->ptr_left,formatter); \

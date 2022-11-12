@@ -17,9 +17,12 @@ int main(void) {
     insert_bst_int(b,9);
     print_in_order_bst_int(b,"%d\n");
     puts("---");
+    delete_bst_int(b,10);
+    puts("---");
+    print_in_order_bst_int(b,"%d\n");
     //print_in_order_bst_int(b,"%d\n");
     //print_in_order_bst_int(b,"%d\n");
-    printf("%p\n",find_bst_int(b,11));
+    //printf("%p\n",find_parent_bst_int(b,11));
     //puts("---");
     //printf("%d\n",get_parent_bst_int(b,1)->m_value);
     
