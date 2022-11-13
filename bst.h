@@ -69,6 +69,7 @@
             n->m_value = va_arg(argp,type); \
             n->ptr_left = NULL; \
             n->ptr_right = NULL; \
+            va_end(argp); \
             return n; \
         } \
         if(amout_of_values > 1) { \
@@ -82,6 +83,7 @@
                 insert_bst_##suffix(n,va_arg(argp,type)); \
             } \
         } \
+        va_end(argp); \
         return n; \
     } \
 \
