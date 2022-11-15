@@ -1,6 +1,12 @@
 # bst - Binary Seach Tree
 bst is a generic implimentation of an binary search tree in c
 
+The pointer, when 
+```c
+new_bst_...
+```
+will always point to the root of the tree, except when set to another address manually
+
 # compareFunc
 the compareFunc needs to be set **before** creating the vector.
 It shall return
