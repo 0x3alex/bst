@@ -1,7 +1,7 @@
 # bst - Binary Seach Tree
 bst is a generic implimentation of an binary search tree in c
 
-The pointer, when 
+The pointer, which is set, when calling
 ```c
 new_bst_...
 ```
