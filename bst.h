@@ -59,7 +59,7 @@
         } \
     } \
 \
-    bst_##suffix *new_bst_##suffix(int amout_of_values,...) { \
+    bst_##suffix *new_bst_##suffix(const unsigned int amout_of_values,...) { \
         if(amout_of_values < 1) return NULL; \
         bst_##suffix *n = (bst_##suffix*)calloc(1,sizeof(bst_##suffix)); \
         assert(n != NULL); \
