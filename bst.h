@@ -12,54 +12,59 @@
     } bst_##suffix; \
 \
     /* shall return:
-    0 -> value is less than the node, 
-    1 -> value is equal to the node, 
-    2 -> value is greate than the node
+    -1 -> value is less than the node, 
+    0 -> value is equal to the node, 
+    1 -> value is greate than the node
 
     1. param is the tree node, 2nd the value to compare to*/ \
     int (*compareFunc_bst_##suffix)(type,type) = NULL; \
     bool print_with_ptr_bst_##suffix = false; \
 \
-    bst_##suffix *find_bst_##suffix(bst_##suffix *root,type val) {  \
+    static bst_##suffix *find_bst_##suffix(bst_##suffix *root,type val) {  \
         if(root == NULL) return NULL; \
         switch((*compareFunc_bst_##suffix)(root->m_value,val))  { \
-            case 0: \
+            case -1: \
                 return find_bst_##suffix(root->ptr_left,val); \
                 break; \
-            case 1: \
+            case 0: \
                 return root; \
                 break; \
-            case 2: \
+            case 1: \
                 return find_bst_##suffix(root->ptr_right,val); \
                 break; \
         } \
         return NULL; \
     } \
 \
-    void insert_bst_##suffix(bst_##suffix *root, type val) { \
+    static void insert_bst_##suffix(bst_##suffix *root, type val) { \
         if(find_bst_##suffix(root,val) != NULL) return; \
-        if((*compareFunc_bst_##suffix)(root->m_value,val) == 0) { \
-            if(root->ptr_left != NULL) { \
-                insert_bst_##suffix(root->ptr_left,val); \
-            }else{ \
-                root->ptr_left = (bst_##suffix*)calloc(1,sizeof(bst_##suffix)); \
-                root->ptr_left->ptr_left = NULL; \
-                root->ptr_left->ptr_right = NULL; \
-                root->ptr_left->m_value = val; \
-            }\
-        }else if((*compareFunc_bst_##suffix)(root->m_value,val) == 2) { \
-            if(root->ptr_right != NULL) { \
-                insert_bst_##suffix(root->ptr_right,val); \
-            }else{ \
-                root->ptr_right = (bst_##suffix*)calloc(1,sizeof(bst_##suffix)); \
-                root->ptr_right->ptr_left = NULL; \
-                root->ptr_right->ptr_right = NULL; \
-                root->ptr_right->m_value = val; \
-            }\
+        switch((*compareFunc_bst_##suffix)(root->m_value,val)) { \
+            case -1: /*less*/ \
+                if(root->ptr_left != NULL) \
+                    insert_bst_##suffix(root->ptr_left,val); \
+                else { \
+                    root->ptr_left = (bst_##suffix*)calloc(1,sizeof(bst_##suffix)); \
+                    root->ptr_left->ptr_left = NULL; \
+                    root->ptr_left->ptr_right = NULL; \
+                    root->ptr_left->m_value = val; \
+                } \
+                break; \
+            case 1: /*more*/ \
+                if(root->ptr_right != NULL) \
+                    insert_bst_##suffix(root->ptr_right,val); \
+                else { \
+                    root->ptr_right = (bst_##suffix*)calloc(1,sizeof(bst_##suffix)); \
+                    root->ptr_right->ptr_left = NULL; \
+                    root->ptr_right->ptr_right = NULL; \
+                    root->ptr_right->m_value = val; \
+                }\
+                break; \
+            default: \
+                break; \
         } \
     } \
 \
-    bst_##suffix *new_bst_##suffix(const unsigned int amout_of_values,...) { \
+    static bst_##suffix *new_bst_##suffix(const unsigned int amout_of_values,...) { \
         if(amout_of_values < 1) return NULL; \
         bst_##suffix *n = (bst_##suffix*)calloc(1,sizeof(bst_##suffix)); \
         assert(n != NULL); \
@@ -91,7 +96,7 @@
         This function can also be used to destroy substrees.
         The ptr_left or ptr_right of the node above *b needs to be updated manually
     */ \
-    void destroy_bst_##suffix(bst_##suffix *root) { \
+    static void destroy_bst_##suffix(bst_##suffix *root) { \
         if(root->ptr_left != NULL) { \
             destroy_bst_##suffix(root->ptr_left); \
         } \
@@ -101,30 +106,38 @@
         free(root); \
     } \
 \
-    bst_##suffix *get_min_bst_##suffix(bst_##suffix *root) { \
+    static bst_##suffix *get_min_bst_##suffix(bst_##suffix *root) { \
         bst_##suffix *c = root; \
         while(c->ptr_left != NULL) c = c->ptr_left; \
         return c; \
     } \
 \
-    bst_##suffix *find_parent_bst_##suffix(bst_##suffix *root, type val) { \
+    static bst_##suffix *find_parent_bst_##suffix(bst_##suffix *root, type val) { \
         bst_##suffix *c = root,*p = NULL; \
-        while(c != NULL && (*compareFunc_bst_##suffix)(c->m_value,val) != 1) { \
-            p = c; \
-            if((*compareFunc_bst_##suffix)(c->m_value,val) == 0) { \
-                c = c->ptr_left; \
-            }else{ \
-                c = c->ptr_right; \
+        p = c; \
+        while(c != NULL) { \
+            switch((*compareFunc_bst_##suffix)(c->m_value,val)) { \
+                case -1: \
+                    p = c; \
+                    c = c->ptr_left; \
+                    break; \
+                case 0: \
+                    return p; \
+                    break; \
+                case 1: \
+                    p = c; \
+                    c = c->ptr_right; \
+                    break; \
             } \
         } \
         return p; \
     } \
 \
-    bool is_leaf_bst_##suffix(bst_##suffix *n) { \
+    static bool is_leaf_bst_##suffix(bst_##suffix *n) { \
         return n->ptr_left == NULL && n->ptr_right == NULL; \
     } \
 \
-    void delete_bst_##suffix(bst_##suffix *root, type val) { \
+    static void delete_bst_##suffix(bst_##suffix *root, type val) { \
         bst_##suffix *k = find_bst_##suffix(root,val); \
         if(k == NULL) return; \
         bst_##suffix *p = find_parent_bst_##suffix(root,val); \
@@ -143,8 +156,12 @@
         }else{ \
             bst_##suffix *c = k->ptr_left != NULL ? k->ptr_left : k->ptr_right; \
             if(k != root) { \
-                if(p->ptr_left == k) p->ptr_left = c; \
+                if(p->ptr_left == k) { \
+                    p->ptr_left = c; \
+                }\
                 else p->ptr_right = c; \
+                printf("a   %p\n",p); \
+                printf("a   %p\n",k); \
             }else{ \
                 root = c; \
             } \
@@ -152,7 +169,7 @@
         } \
     } \
 \
-    void print_in_order_bst_##suffix(bst_##suffix *root, char *formatter) { \
+    static void print_in_order_bst_##suffix(bst_##suffix *root, char *formatter) { \
         if(root != NULL) { \
             print_in_order_bst_##suffix(root->ptr_left,formatter); \
             printf(formatter,root->m_value); \

@@ -4,9 +4,9 @@
 define_bst(int,int);
 
 int cmp(int node, int val) {
-    if(val < node) return 0;
-    if(val == node) return 1;
-    if(val > node) return 2;
+    if(val < node) return -1;
+    if(val == node) return 0;
+    if(val > node) return 1;
 }
 
 void intBst() {
@@ -28,9 +28,9 @@ struct point {
 };
 
 int structCmp(struct point *node, struct point *val) {
-    if(val->x < node->x) return 0;
-    if(val->x == node->x) return 1;
-    if(val->x > node->x) return 2;
+    if(val->x < node->x) return -1;
+    if(val->x == node->x) return 0;
+    if(val->x > node->x) return 1;
 }
 
 define_bst(s,struct point *);
