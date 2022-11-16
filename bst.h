@@ -17,8 +17,8 @@
     1 -> value is greate than the node
 
     1. param is the tree node, 2nd the value to compare to*/ \
-    int (*compareFunc_bst_##suffix)(type,type) = NULL; \
-    bool print_with_ptr_bst_##suffix = false; \
+    static int (*compareFunc_bst_##suffix)(type,type) = NULL; \
+    static bool print_with_ptr_bst_##suffix = false; \
 \
     static bst_##suffix *find_bst_##suffix(bst_##suffix *root,type val) {  \
         if(root == NULL) return NULL; \
